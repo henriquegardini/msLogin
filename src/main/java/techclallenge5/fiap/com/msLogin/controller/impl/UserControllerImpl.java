@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import techclallenge5.fiap.com.msLogin.controller.UserController;
-import techclallenge5.fiap.com.msLogin.model.User;
-import techclallenge5.fiap.com.msLogin.repository.UserRepository;
+import techclallenge5.fiap.com.msLogin.dto.response.UserResponse;
+import techclallenge5.fiap.com.msLogin.service.UserService;
 
 @RestController
 @RequestMapping("users")
@@ -16,12 +16,11 @@ import techclallenge5.fiap.com.msLogin.repository.UserRepository;
 public class UserControllerImpl implements UserController {
 
 
-    private UserRepository repository;
+    private UserService service;
 
     @GetMapping
-    public ResponseEntity getAllUsers(){
-        List<User> users = this.repository.findAll();
-
+    public ResponseEntity<List<UserResponse>> getAllUsers() {
+        List<UserResponse> users = service.getAllUsers();
         return ResponseEntity.ok(users);
     }
 

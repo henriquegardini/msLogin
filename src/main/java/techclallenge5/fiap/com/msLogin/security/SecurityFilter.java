@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import techclallenge5.fiap.com.msLogin.exception.UnauthorizedException;
 import techclallenge5.fiap.com.msLogin.repository.UserRepository;
 
 @Component
@@ -30,7 +31,6 @@ public class SecurityFilter extends OncePerRequestFilter {
                 String login = tokenService.validateToken(token);
                 UserDetails user = userRepository.findByLogin(login);
 
-                // Ensure user is found
                 if (user != null) {
                     UsernamePasswordAuthenticationToken authentication =
                             new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
@@ -38,9 +38,7 @@ public class SecurityFilter extends OncePerRequestFilter {
                 }
             }
         } catch (Exception e) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().write("Unauthorized: " + e.getMessage());
-            return;
+            throw new UnauthorizedException(e.getMessage());
         }
         filterChain.doFilter(request, response);
     }

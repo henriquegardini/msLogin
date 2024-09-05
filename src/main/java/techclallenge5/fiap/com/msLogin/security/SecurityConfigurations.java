@@ -14,6 +14,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import techclallenge5.fiap.com.msLogin.security.handler.CustomAccessDeniedHandler;
+import techclallenge5.fiap.com.msLogin.security.handler.CustomAuthenticationEntryPoint;
 
 @Configuration
 @EnableWebSecurity
@@ -21,8 +23,16 @@ public class SecurityConfigurations {
 
     final SecurityFilter securityFilter;
 
-    public SecurityConfigurations(SecurityFilter securityFilter) {
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
+
+    public SecurityConfigurations(SecurityFilter securityFilter,
+                                  CustomAuthenticationEntryPoint customAuthenticationEntryPoint,
+                                  CustomAccessDeniedHandler customAccessDeniedHandler) {
         this.securityFilter = securityFilter;
+        this.customAuthenticationEntryPoint = customAuthenticationEntryPoint;
+        this.customAccessDeniedHandler = customAccessDeniedHandler;
     }
 
     @Bean
@@ -36,6 +46,10 @@ public class SecurityConfigurations {
                         .requestMatchers(new AntPathRequestMatcher("/users")).hasRole("ADMIN")
                         .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()
                         .anyRequest().authenticated())
+                .exceptionHandling(exceptionHandling -> exceptionHandling
+                        .authenticationEntryPoint(customAuthenticationEntryPoint)
+                        .accessDeniedHandler(customAccessDeniedHandler)
+                )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
                 .build();
