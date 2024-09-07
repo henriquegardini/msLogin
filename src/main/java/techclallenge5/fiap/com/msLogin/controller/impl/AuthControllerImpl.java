@@ -1,13 +1,9 @@
 package techclallenge5.fiap.com.msLogin.controller.impl;
 
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import techclallenge5.fiap.com.msLogin.controller.AuthController;
 import techclallenge5.fiap.com.msLogin.dto.UserDto;
@@ -18,7 +14,6 @@ import techclallenge5.fiap.com.msLogin.security.TokenService;
 import techclallenge5.fiap.com.msLogin.service.UserService;
 
 @RestController
-@RequestMapping("auth")
 @AllArgsConstructor
 public class AuthControllerImpl implements AuthController {
 
@@ -29,8 +24,7 @@ public class AuthControllerImpl implements AuthController {
 
     private TokenService tokenService;
 
-    @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody @Valid UserAuthRequest data) {
+    public ResponseEntity<AuthResponse> login(UserAuthRequest data) {
         UserDto user = userService.authenticate(data);
         var auth = new UsernamePasswordAuthenticationToken(user.login(), data.password());
         authenticationManager.authenticate(auth);
@@ -38,8 +32,8 @@ public class AuthControllerImpl implements AuthController {
         return ResponseEntity.ok(new AuthResponse(token));
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<Void> register(@RequestBody @Valid UserRequest data) {
+
+    public ResponseEntity<Void> register(UserRequest data) {
         userService.registerUser(data);
         return ResponseEntity.ok().build();
     }
