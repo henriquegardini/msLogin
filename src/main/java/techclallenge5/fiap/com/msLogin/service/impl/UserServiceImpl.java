@@ -1,6 +1,7 @@
 package techclallenge5.fiap.com.msLogin.service.impl;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -36,7 +37,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void registerUser(UserRequest data) {
+    public UserResponse registerUser(UserRequest data) {
         if (repository.findByLogin(data.login()) != null) {
             throw new IllegalArgumentException("User with this login already exists");
         }
@@ -45,6 +46,8 @@ public class UserServiceImpl implements UserService {
         User newUser = new User(data.login(), encryptedPassword, data.role());
 
         repository.save(newUser);
+
+        return UserMapper.toUserResponse(newUser);
     }
 
     @Override
@@ -60,5 +63,13 @@ public class UserServiceImpl implements UserService {
         }
 
         return UserMapper.toUserDto(user.getUsername(), user.getPassword());
+    }
+
+    @Override
+    public UserResponse findById(UUID id) {
+        User user = repository.findById(id.toString())
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+
+        return UserMapper.toUserResponse(user);
     }
 }

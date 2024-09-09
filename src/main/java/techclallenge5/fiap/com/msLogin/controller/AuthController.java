@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import techclallenge5.fiap.com.msLogin.dto.request.UserAuthRequest;
 import techclallenge5.fiap.com.msLogin.dto.request.UserRequest;
 import techclallenge5.fiap.com.msLogin.dto.response.AuthResponse;
+import techclallenge5.fiap.com.msLogin.dto.response.UserResponse;
 
 @RequestMapping("/auth")
 @Tag(name = "Auth")
@@ -25,5 +26,5 @@ public interface AuthController {
     @PostMapping("/register")
     @Operation(summary = "Register")
     @ApiResponse(responseCode = "200", description = "Usuário registrado com sucesso")
-    ResponseEntity<Void> register(@RequestBody @Valid UserRequest data);
+    ResponseEntity<UserResponse> register(@RequestBody @Valid UserRequest data);
 }

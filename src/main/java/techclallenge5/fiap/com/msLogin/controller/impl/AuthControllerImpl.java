@@ -10,6 +10,7 @@ import techclallenge5.fiap.com.msLogin.dto.UserDto;
 import techclallenge5.fiap.com.msLogin.dto.request.UserAuthRequest;
 import techclallenge5.fiap.com.msLogin.dto.request.UserRequest;
 import techclallenge5.fiap.com.msLogin.dto.response.AuthResponse;
+import techclallenge5.fiap.com.msLogin.dto.response.UserResponse;
 import techclallenge5.fiap.com.msLogin.security.TokenService;
 import techclallenge5.fiap.com.msLogin.service.UserService;
 
@@ -33,8 +34,8 @@ public class AuthControllerImpl implements AuthController {
     }
 
 
-    public ResponseEntity<Void> register(UserRequest data) {
-        userService.registerUser(data);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<UserResponse> register(UserRequest data) {
+       UserResponse user = userService.registerUser(data);
+        return ResponseEntity.ok(user);
     }
 }
