@@ -29,13 +29,13 @@ public class AuthControllerImpl implements AuthController {
         UserDto user = userService.authenticate(data);
         var auth = new UsernamePasswordAuthenticationToken(user.login(), data.password());
         authenticationManager.authenticate(auth);
-        var token = tokenService.generateToken(user.login());
+        var token = tokenService.generateToken(user.login(), user.role().name());
         return ResponseEntity.ok(new AuthResponse(token));
     }
 
 
     public ResponseEntity<UserResponse> register(UserRequest data) {
-       UserResponse user = userService.registerUser(data);
+        UserResponse user = userService.registerUser(data);
         return ResponseEntity.ok(user);
     }
 }

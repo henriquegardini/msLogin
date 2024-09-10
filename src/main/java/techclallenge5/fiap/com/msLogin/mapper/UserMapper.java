@@ -3,6 +3,7 @@ package techclallenge5.fiap.com.msLogin.mapper;
 import techclallenge5.fiap.com.msLogin.dto.UserDto;
 import techclallenge5.fiap.com.msLogin.dto.response.UserResponse;
 import techclallenge5.fiap.com.msLogin.model.User;
+import techclallenge5.fiap.com.msLogin.model.enums.UserRole;
 
 public interface UserMapper {
 
@@ -11,7 +12,7 @@ public interface UserMapper {
                 user.getUpdatedDate());
     }
 
-    static UserDto toUserDto(String login, String password) {
-        return new UserDto(login, password);
+    static UserDto toUserDto(String login, String password, UserRole role) {
+        return new UserDto(login, password, role);
     }
 }

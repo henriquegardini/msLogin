@@ -16,6 +16,10 @@ public class AuthorizationServiceImpl implements AuthorizationService, UserDetai
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return repository.findByLogin(username);
+        UserDetails userDetails = repository.findByLogin(username);
+        if (userDetails == null) {
+            throw new UsernameNotFoundException("User not found with username: " + username);
+        }
+        return userDetails;
     }
 }

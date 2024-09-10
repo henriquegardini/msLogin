@@ -1,4 +1,6 @@
 package techclallenge5.fiap.com.msLogin.dto;
 
-public record UserDto(String login, String password) {
+import techclallenge5.fiap.com.msLogin.model.enums.UserRole;
+
+public record UserDto(String login, String password, UserRole role) {
 }

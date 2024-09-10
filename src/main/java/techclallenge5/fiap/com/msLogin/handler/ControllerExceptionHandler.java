@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 import techclallenge5.fiap.com.msLogin.exception.InvalidPasswordException;
 import techclallenge5.fiap.com.msLogin.exception.TokenCreationException;
 import techclallenge5.fiap.com.msLogin.exception.UnauthorizedException;
@@ -48,6 +49,11 @@ public class ControllerExceptionHandler {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<Object> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
         return buildResponseEntity(HttpStatus.BAD_REQUEST, "Invalid request body", List.of(ex.getMessage()));
+    }
+
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<Object> handleNoResourceFoundException(NoResourceFoundException ex) {
+        return buildResponseEntity(HttpStatus.NOT_FOUND, ex.getMessage(), List.of(ex.getMessage()));
     }
 
 

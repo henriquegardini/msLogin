@@ -1,8 +1,6 @@
 package techclallenge5.fiap.com.msLogin.service.impl;
 
 import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -16,6 +14,7 @@ import techclallenge5.fiap.com.msLogin.exception.InvalidPasswordException;
 import techclallenge5.fiap.com.msLogin.exception.UserNotFoundException;
 import techclallenge5.fiap.com.msLogin.mapper.UserMapper;
 import techclallenge5.fiap.com.msLogin.model.User;
+import techclallenge5.fiap.com.msLogin.model.enums.UserRole;
 import techclallenge5.fiap.com.msLogin.repository.UserRepository;
 import techclallenge5.fiap.com.msLogin.service.UserService;
 
@@ -33,7 +32,7 @@ public class UserServiceImpl implements UserService {
         return repository.findAll()
                 .stream()
                 .map(UserMapper::toUserResponse)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
@@ -62,11 +61,12 @@ public class UserServiceImpl implements UserService {
             throw new InvalidPasswordException("Invalid password");
         }
 
-        return UserMapper.toUserDto(user.getUsername(), user.getPassword());
+        return UserMapper.toUserDto(user.getUsername(), user.getPassword(),
+                UserRole.greaterRole(user.getAuthorities()));
     }
 
     @Override
-    public UserResponse findById(UUID id) {
+    public UserResponse findById(Long id) {
         User user = repository.findById(id.toString())
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
 

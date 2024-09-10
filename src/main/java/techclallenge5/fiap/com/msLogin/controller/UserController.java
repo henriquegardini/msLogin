@@ -4,7 +4,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
-import java.util.UUID;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,5 +26,5 @@ public interface UserController {
     @ApiResponse(responseCode = "200", description = "Usuário retornado com sucesso")
     @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
-    ResponseEntity<UserResponse> getUserById(@PathVariable UUID id);
+    ResponseEntity<UserResponse> getUserById(@PathVariable Long id);
 }
