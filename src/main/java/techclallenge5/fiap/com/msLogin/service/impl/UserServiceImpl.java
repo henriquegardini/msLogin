@@ -1,8 +1,8 @@
 package techclallenge5.fiap.com.msLogin.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -51,11 +51,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto authenticate(UserAuthRequest data) {
-        UserDetails user = repository.findByLogin(data.login());
-
-        if (user == null) {
-            throw new UserNotFoundException("User not found");
-        }
+        User user = this.findByLogin(data.login());
 
         if (!passwordEncoder.matches(data.password(), user.getPassword())) {
             throw new InvalidPasswordException("Invalid password");
@@ -71,5 +67,16 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
 
         return UserMapper.toUserResponse(user);
+    }
+
+    @Override
+    public User findByLogin(String login) {
+        return Optional.of(repository.findByLogin(login))
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+    }
+
+    @Override
+    public void save(User user) {
+        repository.save(user);
     }
 }

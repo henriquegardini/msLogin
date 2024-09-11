@@ -8,7 +8,7 @@ import techclallenge5.fiap.com.msLogin.model.enums.UserRole;
 public interface UserMapper {
 
     static UserResponse toUserResponse(User user) {
-        return new UserResponse(user.getId(), user.getLogin(), user.getRole(), user.getCreatedDate(),
+        return new UserResponse(user.getId(), user.getLogin(), user.getRole(), user.getToken(), user.getCreatedDate(),
                 user.getUpdatedDate());
     }
 

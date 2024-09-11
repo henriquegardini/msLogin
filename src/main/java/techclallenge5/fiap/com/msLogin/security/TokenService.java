@@ -14,14 +14,23 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import techclallenge5.fiap.com.msLogin.exception.TokenCreationException;
 import techclallenge5.fiap.com.msLogin.exception.UnauthorizedException;
+import techclallenge5.fiap.com.msLogin.model.User;
+import techclallenge5.fiap.com.msLogin.service.UserService;
 
 @Service
 public class TokenService {
     @Value("${api.security.token.secret}")
     private String secret;
 
+    final UserService userService;
+
+    public TokenService(UserService userService) {
+        this.userService = userService;
+    }
+
     public String generateToken(String login, String role) {
         try {
+            User user = userService.findByLogin(login);
             Algorithm algorithm = Algorithm.HMAC256(secret);
             String token = JWT.create()
                     .withIssuer("auth-api")
@@ -29,6 +38,8 @@ public class TokenService {
                     .withClaim("role", role)
                     .withExpiresAt(genExpirationDate())
                     .sign(algorithm);
+            user.setToken(token);
+            userService.save(user);
             return token;
         } catch (JWTCreationException exception) {
             throw new TokenCreationException("Error while generating token", exception);

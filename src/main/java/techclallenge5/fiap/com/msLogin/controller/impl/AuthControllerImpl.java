@@ -38,4 +38,11 @@ public class AuthControllerImpl implements AuthController {
         UserResponse user = userService.registerUser(data);
         return ResponseEntity.ok(user);
     }
+
+    @Override
+    public ResponseEntity<Void> validateToken(String authorizationHeader) {
+        String token = authorizationHeader.replace("Bearer ", "");
+        tokenService.validateToken(token);
+        return ResponseEntity.ok().build();
+    }
 }

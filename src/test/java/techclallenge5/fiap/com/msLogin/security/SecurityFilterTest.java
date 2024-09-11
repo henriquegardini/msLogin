@@ -19,6 +19,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import techclallenge5.fiap.com.msLogin.exception.UnauthorizedException;
+import techclallenge5.fiap.com.msLogin.model.User;
 import techclallenge5.fiap.com.msLogin.repository.UserRepository;
 
 class SecurityFilterTest {
@@ -57,7 +58,7 @@ class SecurityFilterTest {
         // Arrange
         when(request.getHeader("Authorization")).thenReturn("Bearer validToken");
         when(tokenService.validateToken("validToken")).thenReturn("validUser");
-        when(userRepository.findByLogin("validUser")).thenReturn(userDetails);
+        when(userRepository.findByLogin("validUser")).thenReturn((User) userDetails);
         when(userDetails.getAuthorities()).thenReturn(null);  // Mock authorities if necessary
         when(response.getWriter()).thenReturn(printWriter);
 

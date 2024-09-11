@@ -14,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import techclallenge5.fiap.com.msLogin.model.User;
 import techclallenge5.fiap.com.msLogin.repository.UserRepository;
 
 class AuthorizationServiceImplTest {
@@ -34,7 +35,7 @@ class AuthorizationServiceImplTest {
         // Arrange
         String username = "testuser";
         UserDetails userDetails = mock(UserDetails.class);
-        when(userRepository.findByLogin(username)).thenReturn(userDetails);
+        when(userRepository.findByLogin(username)).thenReturn((User) userDetails);
 
         // Act
         UserDetails result = authorizationService.loadUserByUsername(username);

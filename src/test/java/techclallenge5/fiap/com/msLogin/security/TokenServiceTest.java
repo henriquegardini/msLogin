@@ -46,7 +46,7 @@ class TokenServiceTest {
 
     @Test
     void testGenerateTokenThrowsTokenCreationException() {
-        TokenService faultyService = new TokenService();
+        TokenService faultyService = new TokenService(null);
         ReflectionTestUtils.setField(faultyService, "secret", secret);
 
         try (MockedStatic<JWT> mockedJWT = mockStatic(JWT.class)) {

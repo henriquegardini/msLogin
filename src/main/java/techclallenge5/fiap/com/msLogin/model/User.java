@@ -48,6 +48,8 @@ public class User implements UserDetails {
 
     private UserRole role;
 
+    private String token;
+
     @CreationTimestamp
     private LocalDateTime createdDate;
 
@@ -91,5 +93,9 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }
